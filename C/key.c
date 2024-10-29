@@ -20,63 +20,70 @@ void function1() {
   char str[100];
   char choice;
 
-  // 输入字符串
-  printf("请输入一个字符串(最多99个字符): ");
-  scanf("%99s", str); // 限制最大输入字符数为99
+  while (true) {
+    // 输入字符串
+    printf("请输入一个字符串(最多99个字符), 或输入 'q' 退出: ");
+    scanf("%99s", str);
 
-  // 清除缓冲区中残留的字符
-  while (getchar() != '\n')
-    ;
+    // 检查是否输入 'q' 来退出
+    if (strcmp(str, "q") == 0) {
+      break;
+    }
 
-  // 输入操作选择
-  printf("请选择操作 (a: 小写转大写, b: 大写转小写, c: 排序从大到小, d: "
-         "排序从小到大): ");
-  scanf(" %c", &choice);
+    // 清除缓冲区中残留的字符
+    while (getchar() != '\n')
+      ;
 
-  int len = strlen(str);
+    // 输入操作选择
+    printf("请选择操作 (a: 小写转大写, b: 大写转小写, c: 排序从大到小, d: "
+           "排序从小到大): ");
+    scanf(" %c", &choice);
 
-  switch (choice) {
-  case 'a':
-    for (int i = 0; i < len; i++)
-      str[i] = toupper(str[i]);
-    printf("转换为大写后的字符串: %s\n", str);
-    break;
+    int len = strlen(str);
 
-  case 'b':
-    for (int i = 0; i < len; i++)
-      str[i] = tolower(str[i]);
-    printf("转换为小写后的字符串: %s\n", str);
-    break;
+    switch (choice) {
+    case 'a':
+      for (int i = 0; i < len; i++)
+        str[i] = toupper(str[i]);
+      printf("转换为大写后的字符串: %s\n", str);
+      break;
 
-  case 'c':
-    for (int i = 0; i < len - 1; i++) {
-      for (int j = i + 1; j < len; j++) {
-        if (str[i] < str[j]) {
-          char temp = str[i];
-          str[i] = str[j];
-          str[j] = temp;
+    case 'b':
+      for (int i = 0; i < len; i++)
+        str[i] = tolower(str[i]);
+      printf("转换为小写后的字符串: %s\n", str);
+      break;
+
+    case 'c':
+      for (int i = 0; i < len - 1; i++) {
+        for (int j = i + 1; j < len; j++) {
+          if (str[i] < str[j]) {
+            char temp = str[i];
+            str[i] = str[j];
+            str[j] = temp;
+          }
         }
       }
-    }
-    printf("排序（从大到小）后的字符串: %s\n", str);
-    break;
+      printf("排序（从大到小）后的字符串: %s\n", str);
+      break;
 
-  case 'd':
-    for (int i = 0; i < len - 1; i++) {
-      for (int j = i + 1; j < len; j++) {
-        if (str[i] > str[j]) {
-          char temp = str[i];
-          str[i] = str[j];
-          str[j] = temp;
+    case 'd':
+      for (int i = 0; i < len - 1; i++) {
+        for (int j = i + 1; j < len; j++) {
+          if (str[i] > str[j]) {
+            char temp = str[i];
+            str[i] = str[j];
+            str[j] = temp;
+          }
         }
       }
-    }
-    printf("排序（从小到大）后的字符串: %s\n", str);
-    break;
+      printf("排序（从小到大）后的字符串: %s\n", str);
+      break;
 
-  default:
-    printf("无效选择,请输入a, b, c或d。\n");
-    break;
+    default:
+      printf("无效选择,请输入a, b, c或d。\n");
+      break;
+    }
   }
 }
 
@@ -85,55 +92,68 @@ void function2() {
   int num;
   char choice;
 
-  printf("请输入一个0到1000之间的数字: ");
-  scanf("%d", &num);
-
-  if (num < 0 || num > 1000) {
-    printf("输入数字不在0到1000范围内。\n");
-    return;
-  }
-
-  printf("请选择操作 (a: 素数检测, b: 奇数检测, c: 偶数检测, d: 特殊输出): ");
-  scanf(" %c", &choice);
-
-  switch (choice) {
-  case 'a': {
-    if (is_prime(num)) {
-      printf("%d 是一个素数。\n", num);
-    } else {
-      int next_prime = num + 1;
-      while (!is_prime(next_prime))
-        next_prime++;
-      printf("%d 不是素数，最近的下一个素数是: %d\n", num, next_prime);
+  while (true) {
+    printf("请输入一个0到1000之间的数字，或输入 'q' 退出: ");
+    if (scanf("%d", &num) != 1) {
+      char exitChar;
+      scanf("%c", &exitChar);
+      if (exitChar == 'q') {
+        break;
+      } else {
+        printf("无效输入，请重新输入。\n");
+        while (getchar() != '\n')
+          ; // 清除缓冲区
+        continue;
+      }
     }
-    break;
-  }
 
-  case 'b':
-    printf("%d %s奇数。\n", num, (num % 2 != 0) ? "是" : "不是");
-    break;
-
-  case 'c':
-    printf("%d %s偶数。\n", num, (num % 2 == 0) ? "是" : "不是");
-    break;
-
-  case 'd':
-    if (num == 520) {
-      printf("  **   **  \n");
-      printf(" *  * *  * \n");
-      printf("*    *    *\n");
-      printf(" *       * \n");
-      printf("   *   *   \n");
-      printf("     *     \n");
-
-    } else {
-      printf("输入的数字不是520。\n");
+    if (num < 0 || num > 1000) {
+      printf("输入数字不在0到1000范围内。\n");
+      continue;
     }
-    break;
 
-  default:
-    printf("无效选择,请输入a, b, c或d。\n");
-    break;
+    printf("请选择操作 (a: 素数检测, b: 奇数检测, c: 偶数检测, d: 特殊输出): ");
+    scanf(" %c", &choice);
+
+    switch (choice) {
+    case 'a': {
+      if (is_prime(num)) {
+        printf("%d 是一个素数。\n", num);
+      } else {
+        int next_prime = num + 1;
+        while (!is_prime(next_prime))
+          next_prime++;
+        printf("%d 不是素数，最近的下一个素数是: %d\n", num, next_prime);
+      }
+      break;
+    }
+
+    case 'b':
+      printf("%d %s奇数。\n", num, (num % 2 != 0) ? "是" : "不是");
+      break;
+
+    case 'c':
+      printf("%d %s偶数。\n", num, (num % 2 == 0) ? "是" : "不是");
+      break;
+
+    case 'd':
+      if (num == 520) {
+        printf("  **   **  \n");
+        printf(" *  * *  * \n");
+        printf("*    *    *\n");
+        printf(" *       * \n");
+        printf("   *   *   \n");
+        printf("     *     \n");
+
+      } else {
+        printf("输入的数字不是520。\n");
+      }
+      break;
+
+    default:
+      printf("无效选择,请输入a, b, c或d。\n");
+      break;
+    }
   }
 }
 
